@@ -1,0 +1,125 @@
+============================================================
+CS2 AI CASTER — MATCH REPORT
+============================================================
+Map: de_nuke
+Teams: Team Vanguard (CT)  vs  Team Apex (T)
+Final score — CT 4 : 4 T
+Rounds: 8   Kills: 24
+
+PLAYER STATS (kills / deaths):
+  Drift            6K / 2D
+  Rhea             5K / 1D
+  Blaze            3K / 3D
+  Quill            2K / 3D
+  Echo             2K / 2D
+  Frost            2K / 1D
+  Astra            1K / 4D
+  Nyx              1K / 3D
+  Sol              1K / 3D
+  Corvus           1K / 2D
+
+QUALITY CONTROL — hype distribution:
+  Level 0: 0
+  Level 1: 7
+  Level 2: 3
+  Level 3: 1
+  Level 4: 1
+  Level 5: 2
+  Candidate highlights: 14
+  Commentary events:    12
+
+CLUTCHES:
+  R5 Rhea 1v3 (3 kills, 24HP, WON)
+
+MULTI-KILLS:
+  R5 Rhea 5K (16.39s)
+  R8 Drift 4K (6.69s)
+  R2 Blaze 3K (3.09s)
+
+============================================================
+DEBUG — DETECTED HIGHLIGHTS & COMMENTARY
+============================================================
+
+Round 5 | Rhea | clutch_1v3
+  HP(min): 24  Weapons: ['AWP', 'AWP', 'AWP', 'AWP', 'AWP']  Gaps: [5.0, 9.0, 1.3, 1.09]
+  Hype score: 60  Level: 5
+  Reasons: 5 kill(s), opening kill, low-HP kill, round-winning kill, bomb in play, ACE (5K), 1v3 clutch, started at 24 HP, clutch WON, kills 1.09s apart (extremely fast), rapid AWP multi
+  Decision: COMMENT
+  Commentary: "Rhea breaks the 4-4 deadlock with an unbelievable AWP ace, and that 1v3 post-plant at just 24 HP is outrageous—three clutch kills in 2.39 seconds to seal it for CT!"
+
+Round 8 | Drift | quad_kill
+  HP(min): 18  Weapons: ['AK-47', 'AK-47', 'AK-47', 'AK-47']  Gaps: [2.5, 2.0, 2.19]
+  Hype score: 32  Level: 5
+  Reasons: 4 kill(s), opening kill, low-HP kill, survived at 18 HP, round-winning kill, bomb in play, quad kill (4K)
+  Decision: COMMENT
+  Commentary: "Drift takes over the deadlock at 4-4—an AK quad from the opener to the round winner, chaining them all in 6.69 seconds and somehow surviving on 18 HP!"
+
+Round 2 | Blaze | triple_kill
+  HP(min): 55  Weapons: ['AK-47', 'AK-47', 'AK-47']  Gaps: [2.0, 1.09]
+  Hype score: 20  Level: 4
+  Reasons: 3 kill(s), opening kill, round-winning kill, bomb in play, triple kill (3K), 3+ kills in 3.09s, kills 1.09s apart (extremely fast)
+  Decision: COMMENT
+  Commentary: "Blaze takes over Round 2 with a blistering AK triple in just over three seconds, opening it up, locking down the post-plant, and finishing the round for T to break the 4-4 deadlock!"
+
+Round 7 | Quill | single_kill
+  HP(min): 100  Weapons: ['Knife']  Gaps: []
+  Hype score: 15  Level: 3
+  Reasons: 1 kill(s), opening kill, round-winning kill, knife kill
+  Decision: COMMENT
+  Commentary: "Quill with the knife on CT, the opener and the round-winner in a 4-4 game, and he gets away untouched to put the CTs ahead."
+
+Round 3 | Sol | single_kill
+  HP(min): 100  Weapons: ['AWP']  Gaps: []
+  Hype score: 7  Level: 2
+  Reasons: 1 kill(s), opening kill, round-winning kill
+  Decision: COMMENT
+  Commentary: "Sol opens and closes it with one precise AWP pick, and at 100 HP he shuts the door before the plant to keep CT level at 4-4."
+
+Round 4 | Corvus | single_kill
+  HP(min): 100  Weapons: ['Desert Eagle']  Gaps: []
+  Hype score: 7  Level: 2
+  Reasons: 1 kill(s), opening kill, round-winning kill
+  Decision: COMMENT
+  Commentary: "Corvus opens with the Desert Eagle, and in a 4-4 game that one clean pick is all T need to take Round 4."
+
+Round 5 | Drift | double_kill
+  HP(min): 100  Weapons: ['AK-47', 'AK-47']  Gaps: [8.0]
+  Hype score: 7  Level: 2
+  Reasons: 2 kill(s), bomb in play
+  Decision: COMMENT
+  Commentary: "Drift stays spotless on the post-plant with two clean AK picks, but even his second multikill in five rounds is not enough to stop the T side from dropping it."
+
+Round 1 | Astra | single_kill
+  HP(min): 100  Weapons: ['AK-47']  Gaps: []
+  Hype score: 4  Level: 1
+  Reasons: 1 kill(s), opening kill
+  Decision: COMMENT
+  Commentary: "Astra opens it up for the CTs with the AK, and in a 4-4 game that first pick helps set the tone for the round win."
+
+Round 1 | Quill | single_kill
+  HP(min): 100  Weapons: ['AWP']  Gaps: []
+  Hype score: 4  Level: 1
+  Reasons: 1 kill(s), round-winning kill
+  Decision: COMMENT
+  Commentary: "Quill keeps it calm with the AWP, finds the final pick, and sends CT ahead in this tied 4-4 game."
+
+Round 5 | Echo | single_kill
+  HP(min): 100  Weapons: ['AK-47']  Gaps: []
+  Hype score: 4  Level: 1
+  Reasons: 1 kill(s), bomb in play
+  Decision: COMMENT
+  Commentary: "Echo finds one clean AK-47 frag after the plant and stays untouched, but it’s only a small bright spot in a round the T side still lose at 4-4."
+
+Round 5 | Frost | single_kill
+  HP(min): 100  Weapons: ['AK-47']  Gaps: []
+  Hype score: 4  Level: 1
+  Reasons: 1 kill(s), bomb in play
+  Decision: COMMENT
+  Commentary: "Frost finds one with the AK after the plant, but the T side still can’t convert the round."
+
+Round 6 | Frost | single_kill
+  HP(min): 70  Weapons: ['AK-47']  Gaps: []
+  Hype score: 4  Level: 1
+  Reasons: 1 kill(s), round-winning kill
+  Decision: COMMENT
+  Commentary: "Frost closes Round 6 with a clean AK-47 kill, and from 4-4 it’s the T side edging ahead."

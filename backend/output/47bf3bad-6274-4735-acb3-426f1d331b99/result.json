@@ -1,0 +1,1055 @@
+{
+  "map": "de_nuke",
+  "team_ct": "Team Vanguard",
+  "team_t": "Team Apex",
+  "players": [
+    "Astra",
+    "Nyx",
+    "Quill",
+    "Rhea",
+    "Sol",
+    "Blaze",
+    "Corvus",
+    "Drift",
+    "Echo",
+    "Frost"
+  ],
+  "score": {
+    "ct": 4,
+    "t": 4
+  },
+  "total_rounds": 8,
+  "total_kills": 24,
+  "total_candidate_highlights": 14,
+  "total_commentary_events": 12,
+  "hype_distribution": {
+    "0": 0,
+    "1": 7,
+    "2": 3,
+    "3": 1,
+    "4": 1,
+    "5": 2
+  },
+  "player_stats": {
+    "kills": {
+      "Astra": 1,
+      "Nyx": 1,
+      "Quill": 2,
+      "Blaze": 3,
+      "Sol": 1,
+      "Corvus": 1,
+      "Rhea": 5,
+      "Drift": 6,
+      "Echo": 2,
+      "Frost": 2
+    },
+    "deaths": {
+      "Blaze": 3,
+      "Corvus": 2,
+      "Drift": 2,
+      "Astra": 4,
+      "Nyx": 3,
+      "Quill": 3,
+      "Echo": 2,
+      "Rhea": 1,
+      "Sol": 3,
+      "Frost": 1
+    },
+    "clutches": {
+      "Rhea": 1
+    },
+    "multikills": {
+      "Rhea": 1,
+      "Drift": 1,
+      "Blaze": 1
+    }
+  },
+  "top_highlights": [
+    {
+      "round": 5,
+      "player": "Rhea",
+      "team": "CT",
+      "situation_type": "clutch_1v3",
+      "kills": 5,
+      "gaps_s": [
+        5.0,
+        9.0,
+        1.3,
+        1.09
+      ],
+      "weapons": [
+        "AWP",
+        "AWP",
+        "AWP",
+        "AWP",
+        "AWP"
+      ],
+      "min_hp": 24,
+      "bomb_planted": true,
+      "round_won": true,
+      "sequence_duration": 16.39,
+      "start_ts": 169.34,
+      "end_ts": 185.73,
+      "hype_score": 60,
+      "reasons": [
+        "5 kill(s)",
+        "opening kill",
+        "low-HP kill",
+        "round-winning kill",
+        "bomb in play",
+        "ACE (5K)",
+        "1v3 clutch",
+        "started at 24 HP",
+        "clutch WON",
+        "kills 1.09s apart (extremely fast)",
+        "rapid AWP multi"
+      ],
+      "mechanical": [
+        "kills 1.09s apart (extremely fast)",
+        "rapid AWP multi"
+      ],
+      "confidence": "STRONGLY_INFERRED",
+      "clutch": {
+        "type": "clutch",
+        "player": "Rhea",
+        "situation": "clutch_1v3",
+        "starting_situation": "1v3",
+        "enemies": 3,
+        "hp_start": 24,
+        "kills": 3,
+        "duration": 2.39,
+        "round_won": true,
+        "score_bonus": 18,
+        "reasons": [
+          "1v3 clutch",
+          "started at 24 HP",
+          "clutch WON"
+        ]
+      },
+      "headshots": 3,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 5,
+      "memory": {
+        "player_total_kills": 5,
+        "player_total_deaths": 1,
+        "player_prior_clutch_wins": 1,
+        "player_prior_multikills": 1,
+        "current_round": 5,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 8,
+      "player": "Drift",
+      "team": "T",
+      "situation_type": "quad_kill",
+      "kills": 4,
+      "gaps_s": [
+        2.5,
+        2.0,
+        2.19
+      ],
+      "weapons": [
+        "AK-47",
+        "AK-47",
+        "AK-47",
+        "AK-47"
+      ],
+      "min_hp": 18,
+      "bomb_planted": true,
+      "round_won": true,
+      "sequence_duration": 6.69,
+      "start_ts": 280.73,
+      "end_ts": 287.42,
+      "hype_score": 32,
+      "reasons": [
+        "4 kill(s)",
+        "opening kill",
+        "low-HP kill",
+        "survived at 18 HP",
+        "round-winning kill",
+        "bomb in play",
+        "quad kill (4K)"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 3,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 5,
+      "memory": {
+        "player_total_kills": 6,
+        "player_total_deaths": 2,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 1,
+        "current_round": 8,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 2,
+      "player": "Blaze",
+      "team": "T",
+      "situation_type": "triple_kill",
+      "kills": 3,
+      "gaps_s": [
+        2.0,
+        1.09
+      ],
+      "weapons": [
+        "AK-47",
+        "AK-47",
+        "AK-47"
+      ],
+      "min_hp": 55,
+      "bomb_planted": true,
+      "round_won": true,
+      "sequence_duration": 3.09,
+      "start_ts": 80.25,
+      "end_ts": 83.34,
+      "hype_score": 20,
+      "reasons": [
+        "3 kill(s)",
+        "opening kill",
+        "round-winning kill",
+        "bomb in play",
+        "triple kill (3K)",
+        "3+ kills in 3.09s",
+        "kills 1.09s apart (extremely fast)"
+      ],
+      "mechanical": [
+        "3+ kills in 3.09s",
+        "kills 1.09s apart (extremely fast)"
+      ],
+      "confidence": "STRONGLY_INFERRED",
+      "clutch": null,
+      "headshots": 2,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 4,
+      "memory": {
+        "player_total_kills": 3,
+        "player_total_deaths": 3,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 1,
+        "current_round": 2,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 7,
+      "player": "Quill",
+      "team": "CT",
+      "situation_type": "single_kill",
+      "kills": 1,
+      "gaps_s": [],
+      "weapons": [
+        "Knife"
+      ],
+      "min_hp": 100,
+      "bomb_planted": false,
+      "round_won": true,
+      "sequence_duration": 0.0,
+      "start_ts": 251.73,
+      "end_ts": 251.73,
+      "hype_score": 15,
+      "reasons": [
+        "1 kill(s)",
+        "opening kill",
+        "round-winning kill",
+        "knife kill"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 0,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 3,
+      "memory": {
+        "player_total_kills": 2,
+        "player_total_deaths": 3,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 0,
+        "current_round": 7,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 3,
+      "player": "Sol",
+      "team": "CT",
+      "situation_type": "single_kill",
+      "kills": 1,
+      "gaps_s": [],
+      "weapons": [
+        "AWP"
+      ],
+      "min_hp": 100,
+      "bomb_planted": false,
+      "round_won": true,
+      "sequence_duration": 0.0,
+      "start_ts": 110.34,
+      "end_ts": 110.34,
+      "hype_score": 7,
+      "reasons": [
+        "1 kill(s)",
+        "opening kill",
+        "round-winning kill"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 0,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 2,
+      "memory": {
+        "player_total_kills": 1,
+        "player_total_deaths": 3,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 0,
+        "current_round": 3,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 4,
+      "player": "Corvus",
+      "team": "T",
+      "situation_type": "single_kill",
+      "kills": 1,
+      "gaps_s": [],
+      "weapons": [
+        "Desert Eagle"
+      ],
+      "min_hp": 100,
+      "bomb_planted": false,
+      "round_won": true,
+      "sequence_duration": 0.0,
+      "start_ts": 141.34,
+      "end_ts": 141.34,
+      "hype_score": 7,
+      "reasons": [
+        "1 kill(s)",
+        "opening kill",
+        "round-winning kill"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 1,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 2,
+      "memory": {
+        "player_total_kills": 1,
+        "player_total_deaths": 2,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 0,
+        "current_round": 4,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 5,
+      "player": "Drift",
+      "team": "T",
+      "situation_type": "double_kill",
+      "kills": 2,
+      "gaps_s": [
+        8.0
+      ],
+      "weapons": [
+        "AK-47",
+        "AK-47"
+      ],
+      "min_hp": 100,
+      "bomb_planted": true,
+      "round_won": false,
+      "sequence_duration": 8.0,
+      "start_ts": 172.34,
+      "end_ts": 180.34,
+      "hype_score": 7,
+      "reasons": [
+        "2 kill(s)",
+        "bomb in play"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 1,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 2,
+      "memory": {
+        "player_total_kills": 6,
+        "player_total_deaths": 2,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 1,
+        "current_round": 5,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 1,
+      "player": "Astra",
+      "team": "CT",
+      "situation_type": "single_kill",
+      "kills": 1,
+      "gaps_s": [],
+      "weapons": [
+        "AK-47"
+      ],
+      "min_hp": 100,
+      "bomb_planted": false,
+      "round_won": true,
+      "sequence_duration": 0.0,
+      "start_ts": 41.25,
+      "end_ts": 41.25,
+      "hype_score": 4,
+      "reasons": [
+        "1 kill(s)",
+        "opening kill"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 1,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 1,
+      "memory": {
+        "player_total_kills": 1,
+        "player_total_deaths": 4,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 0,
+        "current_round": 1,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 1,
+      "player": "Quill",
+      "team": "CT",
+      "situation_type": "single_kill",
+      "kills": 1,
+      "gaps_s": [],
+      "weapons": [
+        "AWP"
+      ],
+      "min_hp": 100,
+      "bomb_planted": false,
+      "round_won": true,
+      "sequence_duration": 0.0,
+      "start_ts": 51.25,
+      "end_ts": 51.25,
+      "hype_score": 4,
+      "reasons": [
+        "1 kill(s)",
+        "round-winning kill"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 1,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 1,
+      "memory": {
+        "player_total_kills": 2,
+        "player_total_deaths": 3,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 0,
+        "current_round": 1,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 5,
+      "player": "Echo",
+      "team": "T",
+      "situation_type": "single_kill",
+      "kills": 1,
+      "gaps_s": [],
+      "weapons": [
+        "AK-47"
+      ],
+      "min_hp": 100,
+      "bomb_planted": true,
+      "round_won": false,
+      "sequence_duration": 0.0,
+      "start_ts": 176.34,
+      "end_ts": 176.34,
+      "hype_score": 4,
+      "reasons": [
+        "1 kill(s)",
+        "bomb in play"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 0,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 1,
+      "memory": {
+        "player_total_kills": 2,
+        "player_total_deaths": 2,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 0,
+        "current_round": 5,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    }
+  ],
+  "clutches": [
+    {
+      "round": 5,
+      "player": "Rhea",
+      "team": "CT",
+      "situation_type": "clutch_1v3",
+      "kills": 5,
+      "gaps_s": [
+        5.0,
+        9.0,
+        1.3,
+        1.09
+      ],
+      "weapons": [
+        "AWP",
+        "AWP",
+        "AWP",
+        "AWP",
+        "AWP"
+      ],
+      "min_hp": 24,
+      "bomb_planted": true,
+      "round_won": true,
+      "sequence_duration": 16.39,
+      "start_ts": 169.34,
+      "end_ts": 185.73,
+      "hype_score": 60,
+      "reasons": [
+        "5 kill(s)",
+        "opening kill",
+        "low-HP kill",
+        "round-winning kill",
+        "bomb in play",
+        "ACE (5K)",
+        "1v3 clutch",
+        "started at 24 HP",
+        "clutch WON",
+        "kills 1.09s apart (extremely fast)",
+        "rapid AWP multi"
+      ],
+      "mechanical": [
+        "kills 1.09s apart (extremely fast)",
+        "rapid AWP multi"
+      ],
+      "confidence": "STRONGLY_INFERRED",
+      "clutch": {
+        "type": "clutch",
+        "player": "Rhea",
+        "situation": "clutch_1v3",
+        "starting_situation": "1v3",
+        "enemies": 3,
+        "hp_start": 24,
+        "kills": 3,
+        "duration": 2.39,
+        "round_won": true,
+        "score_bonus": 18,
+        "reasons": [
+          "1v3 clutch",
+          "started at 24 HP",
+          "clutch WON"
+        ]
+      },
+      "headshots": 3,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 5,
+      "memory": {
+        "player_total_kills": 5,
+        "player_total_deaths": 1,
+        "player_prior_clutch_wins": 1,
+        "player_prior_multikills": 1,
+        "current_round": 5,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    }
+  ],
+  "multikills": [
+    {
+      "round": 5,
+      "player": "Rhea",
+      "team": "CT",
+      "situation_type": "clutch_1v3",
+      "kills": 5,
+      "gaps_s": [
+        5.0,
+        9.0,
+        1.3,
+        1.09
+      ],
+      "weapons": [
+        "AWP",
+        "AWP",
+        "AWP",
+        "AWP",
+        "AWP"
+      ],
+      "min_hp": 24,
+      "bomb_planted": true,
+      "round_won": true,
+      "sequence_duration": 16.39,
+      "start_ts": 169.34,
+      "end_ts": 185.73,
+      "hype_score": 60,
+      "reasons": [
+        "5 kill(s)",
+        "opening kill",
+        "low-HP kill",
+        "round-winning kill",
+        "bomb in play",
+        "ACE (5K)",
+        "1v3 clutch",
+        "started at 24 HP",
+        "clutch WON",
+        "kills 1.09s apart (extremely fast)",
+        "rapid AWP multi"
+      ],
+      "mechanical": [
+        "kills 1.09s apart (extremely fast)",
+        "rapid AWP multi"
+      ],
+      "confidence": "STRONGLY_INFERRED",
+      "clutch": {
+        "type": "clutch",
+        "player": "Rhea",
+        "situation": "clutch_1v3",
+        "starting_situation": "1v3",
+        "enemies": 3,
+        "hp_start": 24,
+        "kills": 3,
+        "duration": 2.39,
+        "round_won": true,
+        "score_bonus": 18,
+        "reasons": [
+          "1v3 clutch",
+          "started at 24 HP",
+          "clutch WON"
+        ]
+      },
+      "headshots": 3,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 5,
+      "memory": {
+        "player_total_kills": 5,
+        "player_total_deaths": 1,
+        "player_prior_clutch_wins": 1,
+        "player_prior_multikills": 1,
+        "current_round": 5,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 8,
+      "player": "Drift",
+      "team": "T",
+      "situation_type": "quad_kill",
+      "kills": 4,
+      "gaps_s": [
+        2.5,
+        2.0,
+        2.19
+      ],
+      "weapons": [
+        "AK-47",
+        "AK-47",
+        "AK-47",
+        "AK-47"
+      ],
+      "min_hp": 18,
+      "bomb_planted": true,
+      "round_won": true,
+      "sequence_duration": 6.69,
+      "start_ts": 280.73,
+      "end_ts": 287.42,
+      "hype_score": 32,
+      "reasons": [
+        "4 kill(s)",
+        "opening kill",
+        "low-HP kill",
+        "survived at 18 HP",
+        "round-winning kill",
+        "bomb in play",
+        "quad kill (4K)"
+      ],
+      "mechanical": [],
+      "confidence": "CERTAIN",
+      "clutch": null,
+      "headshots": 3,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 5,
+      "memory": {
+        "player_total_kills": 6,
+        "player_total_deaths": 2,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 1,
+        "current_round": 8,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    },
+    {
+      "round": 2,
+      "player": "Blaze",
+      "team": "T",
+      "situation_type": "triple_kill",
+      "kills": 3,
+      "gaps_s": [
+        2.0,
+        1.09
+      ],
+      "weapons": [
+        "AK-47",
+        "AK-47",
+        "AK-47"
+      ],
+      "min_hp": 55,
+      "bomb_planted": true,
+      "round_won": true,
+      "sequence_duration": 3.09,
+      "start_ts": 80.25,
+      "end_ts": 83.34,
+      "hype_score": 20,
+      "reasons": [
+        "3 kill(s)",
+        "opening kill",
+        "round-winning kill",
+        "bomb in play",
+        "triple kill (3K)",
+        "3+ kills in 3.09s",
+        "kills 1.09s apart (extremely fast)"
+      ],
+      "mechanical": [
+        "3+ kills in 3.09s",
+        "kills 1.09s apart (extremely fast)"
+      ],
+      "confidence": "STRONGLY_INFERRED",
+      "clutch": null,
+      "headshots": 2,
+      "score_ct": 4,
+      "score_t": 4,
+      "hype_level": 4,
+      "memory": {
+        "player_total_kills": 3,
+        "player_total_deaths": 3,
+        "player_prior_clutch_wins": 0,
+        "player_prior_multikills": 1,
+        "current_round": 2,
+        "score_ct": 4,
+        "score_t": 4
+      }
+    }
+  ],
+  "commentary": [
+    {
+      "timestamp": 41.25,
+      "round": 1,
+      "hype_level": 1,
+      "importance": 34,
+      "situation": "single_kill",
+      "player": "Astra",
+      "text": "Astra opens it up for the CTs with the AK, and in a 4-4 game that first pick helps set the tone for the round win.",
+      "facts_used": [
+        "Round 1",
+        "Score is tied 4-4",
+        "Astra is on CT",
+        "Astra gets 1 kill",
+        "It is the opening kill",
+        "Weapon shown: AK-47",
+        "Astra remains at 100 HP minimum in the sequence",
+        "Bomb was not planted",
+        "CT win the round"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 51.25,
+      "round": 1,
+      "hype_level": 1,
+      "importance": 38,
+      "situation": "single_kill",
+      "player": "Quill",
+      "text": "Quill keeps it calm with the AWP, finds the final pick, and sends CT ahead in this tied 4-4 game.",
+      "facts_used": [
+        "Round 1 situation provided",
+        "Quill is on CT",
+        "Quill gets 1 kill",
+        "The kill is with an AWP",
+        "Quill stayed at 100 HP",
+        "Bomb was not planted",
+        "This was the round-winning kill",
+        "CTs won the round",
+        "Score is tied 4-4 in the provided state"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 83.34,
+      "round": 2,
+      "hype_level": 4,
+      "importance": 77,
+      "situation": "triple_kill",
+      "player": "Blaze",
+      "text": "Blaze takes over Round 2 with a blistering AK triple in just over three seconds, opening it up, locking down the post-plant, and finishing the round for T to break the 4-4 deadlock!",
+      "facts_used": [
+        "Round 2",
+        "Score tied 4-4",
+        "Blaze on T side",
+        "Triple kill with 3 AK-47 kills",
+        "Kill gaps were 2.0s and 1.09s",
+        "Sequence lasted 3.09s",
+        "Minimum HP during the sequence was 55",
+        "Bomb was planted",
+        "Included the opening kill",
+        "Included the round-winning kill",
+        "T side won the round"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 110.34,
+      "round": 3,
+      "hype_level": 2,
+      "importance": 35,
+      "situation": "single_kill",
+      "player": "Sol",
+      "text": "Sol opens and closes it with one precise AWP pick, and at 100 HP he shuts the door before the plant to keep CT level at 4-4.",
+      "facts_used": [
+        "Round 3.",
+        "Sol is on CT.",
+        "Sol used an AWP.",
+        "Sol got 1 kill.",
+        "It was the opening kill.",
+        "It was the round-winning kill.",
+        "Bomb was not planted.",
+        "Sol stayed at 100 HP in the sequence.",
+        "CT won the round.",
+        "Score is tied 4-4."
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 141.34,
+      "round": 4,
+      "hype_level": 2,
+      "importance": 38,
+      "situation": "single_kill",
+      "player": "Corvus",
+      "text": "Corvus opens with the Desert Eagle, and in a 4-4 game that one clean pick is all T need to take Round 4.",
+      "facts_used": [
+        "Round 4",
+        "Score tied 4-4",
+        "Corvus is on T side",
+        "Corvus got 1 kill",
+        "Weapon: Desert Eagle",
+        "It was the opening kill",
+        "It was the round-winning kill",
+        "Bomb was not planted",
+        "Corvus stayed at 100 HP",
+        "The round was won by T",
+        "Sequence duration recorded as 0.0s"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 176.34,
+      "round": 5,
+      "hype_level": 1,
+      "importance": 38,
+      "situation": "single_kill",
+      "player": "Echo",
+      "text": "Echo finds one clean AK-47 frag after the plant and stays untouched, but it\u2019s only a small bright spot in a round the T side still lose at 4-4.",
+      "facts_used": [
+        "Round 5",
+        "Score tied 4-4",
+        "Echo on T side",
+        "Echo got 1 kill",
+        "Used AK-47",
+        "Bomb was planted",
+        "Echo stayed at 100 HP during the sequence",
+        "The round was ultimately lost",
+        "Sequence duration was 0.0s"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 178.34,
+      "round": 5,
+      "hype_level": 1,
+      "importance": 26,
+      "situation": "single_kill",
+      "player": "Frost",
+      "text": "Frost finds one with the AK after the plant, but the T side still can\u2019t convert the round.",
+      "facts_used": [
+        "Round 5",
+        "Score tied 4-4 before the round",
+        "Frost is on T side",
+        "Frost gets 1 kill",
+        "Weapon: AK-47",
+        "Bomb is planted during the round",
+        "Frost's minimum HP in the sequence is 100",
+        "The round is ultimately lost by T"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 180.34,
+      "round": 5,
+      "hype_level": 2,
+      "importance": 61,
+      "situation": "double_kill",
+      "player": "Drift",
+      "text": "Drift stays spotless on the post-plant with two clean AK picks, but even his second multikill in five rounds is not enough to stop the T side from dropping it.",
+      "facts_used": [
+        "Round 5",
+        "Score was tied 4-4",
+        "Drift was on T side",
+        "Drift got 2 kills",
+        "The two kills were 8.0 seconds apart",
+        "Both kills were with the AK-47",
+        "Drift stayed at 100 HP through the sequence",
+        "The bomb was planted",
+        "T still lost the round",
+        "This was Drift's second multikill in 5 rounds",
+        "Drift had 6 total kills and 2 deaths after the round"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 185.73,
+      "round": 5,
+      "hype_level": 5,
+      "importance": 94,
+      "situation": "clutch_1v3",
+      "player": "Rhea",
+      "text": "Rhea breaks the 4-4 deadlock with an unbelievable AWP ace, and that 1v3 post-plant at just 24 HP is outrageous\u2014three clutch kills in 2.39 seconds to seal it for CT!",
+      "facts_used": [
+        "Round 5 with the score tied 4-4.",
+        "Rhea is on CT.",
+        "The bomb was planted.",
+        "Rhea finished the round with 5 kills, all with the AWP.",
+        "The sequence lasted 16.39 seconds.",
+        "Rhea's minimum HP was 24.",
+        "The clutch started as a 1v3 at 24 HP.",
+        "Rhea got 3 kills in the clutch over 2.39 seconds.",
+        "The round was won by CT.",
+        "The kill gaps were 5.0s, 9.0s, 1.3s, and 1.09s.",
+        "This was an ace and the round-winning kill was included."
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 223.73,
+      "round": 6,
+      "hype_level": 1,
+      "importance": 36,
+      "situation": "single_kill",
+      "player": "Frost",
+      "text": "Frost closes Round 6 with a clean AK-47 kill, and from 4-4 it\u2019s the T side edging ahead.",
+      "facts_used": [
+        "Round 6",
+        "Score tied 4-4 before/at this round state",
+        "Frost on T side",
+        "Single kill with AK-47",
+        "Minimum HP during the sequence: 70",
+        "Bomb was not planted",
+        "This was the round-winning kill",
+        "Round was won by T",
+        "Sequence duration recorded as 0.0s"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 251.73,
+      "round": 7,
+      "hype_level": 3,
+      "importance": 69,
+      "situation": "single_kill",
+      "player": "Quill",
+      "text": "Quill with the knife on CT, the opener and the round-winner in a 4-4 game, and he gets away untouched to put the CTs ahead.",
+      "facts_used": [
+        "Round 7",
+        "Quill on CT",
+        "Score tied 4-4 before/at the round state",
+        "Single kill with the Knife",
+        "It was the opening kill",
+        "It was the round-winning kill",
+        "Bomb was not planted",
+        "Quill stayed at 100 HP",
+        "CTs won the round",
+        "Sequence duration recorded as 0.0s"
+      ],
+      "confidence": "high",
+      "audio": null
+    },
+    {
+      "timestamp": 287.42,
+      "round": 8,
+      "hype_level": 5,
+      "importance": 86,
+      "situation": "quad_kill",
+      "player": "Drift",
+      "text": "Drift takes over the deadlock at 4-4\u2014an AK quad from the opener to the round winner, chaining them all in 6.69 seconds and somehow surviving on 18 HP!",
+      "facts_used": [
+        "Round 8 at a 4-4 scoreline",
+        "Drift on T side got 4 kills",
+        "All 4 kills were with the AK-47",
+        "The kill gaps were 2.5s, 2.0s, and 2.19s",
+        "The 4-kill sequence lasted 6.69 seconds",
+        "Bomb was planted during the round",
+        "Drift's minimum HP in the sequence was 18",
+        "Drift survived on 18 HP",
+        "The sequence included the opening kill",
+        "The sequence included the round-winning kill",
+        "T side won the round",
+        "This was a quad kill (4K)",
+        "Drift had 6 kills and 2 deaths after this round",
+        "Drift had 1 prior multikill before this round"
+      ],
+      "confidence": "high",
+      "audio": null
+    }
+  ],
+  "tts_available": false,
+  "caster": "Vox"
+}
