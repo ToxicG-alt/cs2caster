@@ -82,10 +82,13 @@ async def run_pipeline(source, out_dir, cfg=None, progress=None):
     emit("tts", 92)
     tts_ok = tts.available()
     if tts_ok:
+        any_audio = False
         for idx, c in enumerate(commentary):
             fname = f"audio/clip_{idx:03d}.mp3"
-            if tts.generate(c["text"], str(out / fname)):
+            if await tts.generate(c["text"], str(out / fname)):
                 c["audio"] = fname
+                any_audio = True
+        tts_ok = any_audio
 
     emit("writing_outputs", 97)
     result = _assemble_result(info, match, situations, commentary, memory, cfg, tts_ok)

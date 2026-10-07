@@ -55,7 +55,9 @@ DEFAULT_CONFIG = {
         "profanity": False,
     },
     "llm": {"provider": "openai", "model": "gpt-5.4"},
-    "tts": {"provider": "elevenlabs", "voice_id": "JBFqnCBsd6RMkjVDRZzb", "model_id": "eleven_multilingual_v2"},
+    "tts": {"provider": "elevenlabs", "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+            "model_id": "eleven_multilingual_v2",
+            "openai_voice": "onyx", "openai_model": "tts-1-hd"},
 }
 
 
