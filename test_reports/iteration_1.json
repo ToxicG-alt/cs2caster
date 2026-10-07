@@ -1,0 +1,27 @@
+{
+  "summary": "T1 smoke pass on CS2 AI Esports Caster MVP. Backend sample pipeline works end-to-end (background processing advances through stages). An already-completed sample match verified against all result-structure expectations (map=de_nuke, 4:4 score, 8 rounds, hype_distribution with levels 1..5, 12 commentary entries with all required keys, tts_available=false). Top highlights contain expected deterministic events: Rhea clutch_1v3 L5 (ACE), Drift quad_kill L5, Blaze triple_kill L4. Upload rejects non-.dem with 400 and missing audio returns 404. List endpoint returns matches without heavy payload. Frontend dashboard loads, Run Sample Match triggers processing (progress indicator shown + sidebar entry turns PROCESSING), clicking a completed match in sidebar renders scoreboard, stats, hype distribution bars, biggest highlights with L5/L4 badges, and caster commentary timeline cards. No console errors.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "POST /api/cs2/sample -> 200 with {id, status:processing}",
+    "Background pipeline progresses (stage=ai_analysis_and_commentary, progress=65 observed)",
+    "GET /api/cs2/matches/{id} for completed sample: status=done, map=de_nuke, score {ct:4,t:4}, total_rounds=8",
+    "hype_distribution contains levels 1..5 (counts: L0=0,L1=7,L2=3,L3=1,L4=1,L5=2)",
+    "top_highlights includes clutch_1v3 (Rhea L5, ACE/5K) and quad_kill (Drift L5) and triple_kill (Blaze L4)",
+    "commentary entries contain all required keys: timestamp, round, hype_level, importance, situation, player, text, facts_used, confidence",
+    "tts_available = false (ElevenLabs key empty)",
+    "POST /api/cs2/upload with non-.dem returns 400 {detail: 'Please upload a CS2 .dem file'}",
+    "GET /api/cs2/matches/{id}/audio/missing.mp3 returns 404 {detail: 'Audio not found'}",
+    "GET /api/cs2/matches lists matches without result payload",
+    "Frontend: sample-btn and upload-btn visible on load",
+    "Frontend: clicking match-item-{id} renders scoreboard, hype-distribution, top-highlights, commentary-timeline",
+    "Frontend: hype-badge-5 and hype-badge-4 render; commentary-0 card renders",
+    "Frontend: clicking Run Sample Match transitions sidebar entry to PROCESSING and shows progress keywords",
+    "Frontend: 'voice off (add ElevenLabs key)' indicator shown as expected"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true,
+  "notes": "Did not functionally test .dem parsing (no real demo available in env, per request). Did not wait for the fresh sample run to fully complete (~60-90s / ~24 LLM calls); verified pipeline advancement via live_progress and used a pre-existing completed match for result-shape assertions. Credentials file at /app/memory/test_credentials.md not required (no auth in app)."
+}
