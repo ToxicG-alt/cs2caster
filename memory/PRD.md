@@ -24,25 +24,31 @@ TTS/broadcast. Deterministic Game-Understanding + Highlight layer MUST sit BEFOR
 - Swappable LLM + TTS providers; data-source abstraction for future live/delayed GOTV.
 
 ## Implemented (2026-06)
-- demoparser2-based DemoDataSource + built-in SyntheticDataSource (de_nuke sample).
-- Game-state reconstruction, normalized GameEvent schema.
-- Deterministic detectors: opening/multi-kill, clutch (last-alive logic), mechanical timing,
-  configurable scoring + hype levels, situation clustering.
-- Match memory (factual stats/clutch/multikill counts).
-- Two-stage AI: Analyst (JSON) → Caster (natural line) via OpenAI/Emergent key; graceful fallback.
-- ElevenLabs TTS (graceful no-key fallback), per-clip audio served by backend.
-- Outputs: commentary.json, match_report.txt (debug + QC hype distribution), result.json.
-- React dashboard: upload/sample, progress polling, scoreboard, stats, hype distribution,
-  biggest highlights, commentary timeline with audio playback.
+- demoparser2 (pandas) DemoDataSource + SyntheticDataSource; chronological normalized GameEvent stream.
+- **Event-driven CommentaryEngine (`cs2/commentary_engine.py`)**: walks events in DEMO-TIME order,
+  maintains running game state, scores each event from PAST+CURRENT facts only (never future),
+  detects opening kills, rapid multi-kill escalation, clutch situations (recognized BEFORE the
+  first clutch kill), clutch progression (1vN→1v(N-1)), clutch wins, bomb plants, short round-end.
+- Deterministic priority scoring + thresholds + cooldown + major-event interrupt (all in config).
+- Credit control: simple events use FREE templates; LLM only for 1v3+ clutch WINS (configurable).
+  Sample match = 1 LLM call; a lopsided match with no won clutches = 0 LLM calls.
+- Debug timeline in match_report.txt (COMMENT/IGNORE with reason + METHOD per event).
+- ElevenLabs TTS (preferred) with automatic OpenAI onyx fallback; per-line audio clips.
+- Process-from-URL endpoint for large demos (.dem/.dem.gz/.dem.bz2).
+- React dashboard: chronological commentary timeline, TEMPLATE/LLM badges, LLM-call counter,
+  hype distribution, biggest highlights, audio playback.
 
 ## Verified
-- Full pipeline end-to-end with real LLM on sample match: clutch 1v3 (L5), ACE/quad (L5),
-  triple (L4), good L1–L2 filler contrast; report + commentary.json generated.
-- NOT yet verified against a real uploaded .dem (no demo file available during build) — DemoDataSource
-  is defensive but should be validated with a real ESEA .dem.
+- Real 60MB de_mirage .dem parses end-to-end through the live app (upload + URL paths).
+- Chronological ordering + no-future-events property confirmed (templates present-tense; LLM
+  payload only carries alive_before/after of the current kill + strictly-past recent_kills).
+- LLM clutch-win path fires correctly on the synthetic won 1v3 (1 call) with a factual live line.
+
+## Superseded
+- OLD round-summary path (detect_round_highlights + per-situation analyst/caster) REMOVED from
+  pipeline; game_state.py/detection.py/match_memory.py retained only for helpers.
 
 ## Backlog / next
-- P0: validate DemoDataSource against a real ESEA .dem; add ELEVENLABS_API_KEY to enable voice.
-- P1: economy analysis (full/eco/force), positional/spatial detectors from tick coords.
-- P1: combined single caster_audio.wav timeline with silence gaps for broadcast.
-- P2: OBS/FFmpeg sync + delayed GOTV LiveDataSource (delay_seconds), CV video layer.
+- P1: widen LLM routing to eco upsets / comebacks (needs economy data) — kept off for credit control.
+- P1: synchronized single caster_audio.wav timeline for OBS playback at demo timestamps.
+- P2: OBS/FFmpeg + delayed GOTV LiveDataSource (delay_seconds); CV video layer.

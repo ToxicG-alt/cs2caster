@@ -161,6 +161,8 @@ class DemoDataSource(GameDataSource):
                         "attacker_hp": atk_state.get("hp"),
                         "assister": r.get("assister_name"),
                         "noscope": bool(r.get("noscope")) if "noscope" in r else False,
+                        "penetrated": r.get("penetrated") if "penetrated" in r else 0,
+                        "thrusmoke": bool(r.get("thrusmoke")) if "thrusmoke" in r else False,
                     },
                 ))
 

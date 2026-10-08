@@ -128,6 +128,30 @@ class EmergentLLMProvider(LLMProvider):
             log.warning("caster LLM failed: %s", e)
             return _fallback_cast(situation)
 
+    async def comment_event(self, payload):
+        """Tiny, short LLM call for complex live moments. Returns {'commentary','hype'} or None.
+        The payload contains ONLY current + past facts — never future events."""
+        if not self.key:
+            return None
+        c = self.caster
+        system = (
+            f"You are {c['name']}, a LIVE CS2 esports caster. You are given ONE current game "
+            "event and you do NOT know the future. Reply with ONLY JSON "
+            '{"commentary":"...","hype":0-5}. Commentary = 5-18 words, spoken live, present '
+            "tense, ONLY the given facts, no future events, no markdown, no explanation."
+        )
+        from emergentintegrations.llm.chat import UserMessage
+        try:
+            resp = await self._chat(system).send_message(
+                UserMessage(text=json.dumps(payload, default=str)))
+            data = self._extract_json(resp)
+            if data and data.get("commentary"):
+                return {"commentary": str(data["commentary"]).strip().strip('"'),
+                        "hype": int(data.get("hype", 4))}
+        except Exception as e:  # noqa
+            log.warning("comment_event LLM failed: %s", str(e)[:100])
+        return None
+
 
 def get_llm_provider(cfg):
     return EmergentLLMProvider(cfg)

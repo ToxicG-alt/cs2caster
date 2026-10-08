@@ -276,6 +276,7 @@ export default function App() {
                   </div>
                   <div className="text-right text-xs text-muted-foreground">
                     <p>Caster: <span className="text-foreground font-600">{res.caster}</span></p>
+                    <p className="mt-1">LLM calls: <span className="text-foreground font-mono font-600" data-testid="llm-calls">{res.llm_calls ?? 0}</span> <span className="text-muted-foreground">(rest free templates)</span></p>
                     <p className="mt-1">{res.tts_available
                       ? <span className="text-emerald-400">● voice on</span>
                       : <span className="text-amber-400">● voice off (add ElevenLabs key)</span>}</p>
@@ -343,6 +344,11 @@ export default function App() {
                                 <span className="text-[11px] px-1.5 py-0.5 rounded bg-secondary text-muted-foreground font-mono">
                                   {c.confidence}
                                 </span>
+                                {c.method && (
+                                  <span className={`text-[11px] px-1.5 py-0.5 rounded font-mono font-600 ${c.method === "LLM" ? "bg-primary/25 text-primary" : "bg-secondary text-muted-foreground"}`}>
+                                    {c.method}
+                                  </span>
+                                )}
                               </div>
                               <p className="font-display text-lg leading-snug"
                                 style={{ color: c.hype_level >= 4 ? h.color : undefined }}>
