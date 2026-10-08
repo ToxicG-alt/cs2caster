@@ -98,6 +98,7 @@ export default function App() {
   const [active, setActive] = useState(null);
   const [detail, setDetail] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [demoUrl, setDemoUrl] = useState("");
   const fileRef = useRef(null);
 
   const loadMatches = useCallback(async () => {
@@ -137,6 +138,15 @@ export default function App() {
     } catch (err) { alert("Upload failed: " + (err?.response?.data?.detail || err.message)); }
     finally { setBusy(false); e.target.value = ""; }
   };
+  const onProcessUrl = async () => {
+    const url = demoUrl.trim(); if (!url) return;
+    setBusy(true);
+    try {
+      const r = await axios.post(`${API}/cs2/process-url`, { url });
+      setActive(r.data.id); setDetail(null); setDemoUrl("");
+    } catch (err) { alert("Failed: " + (err?.response?.data?.detail || err.message)); }
+    finally { setBusy(false); }
+  };
 
   const res = detail?.result;
   const processing = detail && detail.status === "processing";
@@ -170,6 +180,15 @@ export default function App() {
               {busy ? <Loader2 size={15} className="animate-spin" /> : <Zap size={15} />} Run Sample Match
             </button>
           </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 pb-3 flex items-center gap-2">
+          <input data-testid="demo-url-input" value={demoUrl} onChange={(e) => setDemoUrl(e.target.value)}
+            placeholder="Paste a direct .dem / .dem.gz / .dem.bz2 link (for large ESEA/FACEIT demos)"
+            className="flex-1 bg-secondary/60 border border-border rounded-md px-3 py-2 text-sm font-mono outline-none focus:border-primary/60 transition-colors" />
+          <button data-testid="process-url-btn" onClick={onProcessUrl} disabled={busy || !demoUrl.trim()}
+            className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-600 border border-border hover:bg-secondary transition-colors disabled:opacity-40 whitespace-nowrap">
+            <ChevronRight size={15} /> Process from URL
+          </button>
         </div>
       </header>
 

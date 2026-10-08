@@ -5,8 +5,12 @@ from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import asyncio
+import bz2
+import gzip
 import logging
+import shutil
 import tempfile
+import urllib.request
 import uuid
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
@@ -65,7 +69,8 @@ async def create_status_check(input: StatusCheckCreate):
 # --------------------------------------------------------------------------- #
 # CS2 AI Caster endpoints
 # --------------------------------------------------------------------------- #
-async def _process_match(match_id: str, demo_bytes: Optional[bytes] = None):
+async def _process_match(match_id: str, demo_bytes: Optional[bytes] = None,
+                         demo_url: Optional[str] = None):
     def progress(stage, pct):
         PROGRESS[match_id] = {"stage": stage, "progress": pct}
     demo_path = None
@@ -76,6 +81,9 @@ async def _process_match(match_id: str, demo_bytes: Optional[bytes] = None):
             tf.write(demo_bytes)
             tf.close()
             demo_path = tf.name
+        elif demo_url:
+            PROGRESS[match_id] = {"stage": "downloading_demo", "progress": 2}
+            demo_path = await asyncio.to_thread(_download_and_prepare, demo_url)
         source = make_source(demo_path)
         out_dir = OUTPUT_DIR / match_id
         cfg = get_config()
@@ -124,6 +132,49 @@ async def upload_demo(file: UploadFile = File(...)):
            "filename": file.filename, "created_at": datetime.now(timezone.utc).isoformat()}
     await db.cs2_matches.insert_one(doc)
     asyncio.create_task(_process_match(match_id, demo_bytes))
+    return {"id": match_id, "status": "processing"}
+
+
+class DemoURL(BaseModel):
+    url: str
+
+
+def _download_and_prepare(url: str) -> str:
+    """Download a .dem (optionally .gz/.bz2) to a temp file and decompress it."""
+    raw = tempfile.NamedTemporaryFile(suffix=".download", delete=False)
+    raw.close()
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=180) as r, open(raw.name, "wb") as f:
+        shutil.copyfileobj(r, f, 1024 * 256)
+    with open(raw.name, "rb") as f:
+        magic = f.read(3)
+    dem = tempfile.NamedTemporaryFile(suffix=".dem", delete=False)
+    dem.close()
+    if magic[:2] == b"\x1f\x8b":
+        with gzip.open(raw.name, "rb") as src, open(dem.name, "wb") as out:
+            shutil.copyfileobj(src, out)
+        os.remove(raw.name)
+        return dem.name
+    if magic == b"BZh":
+        with bz2.open(raw.name, "rb") as src, open(dem.name, "wb") as out:
+            shutil.copyfileobj(src, out)
+        os.remove(raw.name)
+        return dem.name
+    os.replace(raw.name, dem.name)  # assume already a raw .dem
+    return dem.name
+
+
+@api_router.post("/cs2/process-url")
+async def process_url(body: DemoURL):
+    url = body.url.strip()
+    if not url.startswith(("http://", "https://")):
+        raise HTTPException(400, "Provide a direct http(s) link to a .dem / .dem.gz / .dem.bz2")
+    match_id = str(uuid.uuid4())
+    fname = url.split("/")[-1].split("?")[0] or "remote.dem"
+    doc = {"id": match_id, "status": "processing", "source": "url",
+           "filename": fname, "created_at": datetime.now(timezone.utc).isoformat()}
+    await db.cs2_matches.insert_one(doc)
+    asyncio.create_task(_process_match(match_id, demo_url=url))
     return {"id": match_id, "status": "processing"}
 
 
