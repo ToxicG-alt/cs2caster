@@ -10,6 +10,14 @@ from .models import GameEvent, MatchInfo
 log = logging.getLogger("cs2.datasource")
 
 
+def _sid(v):
+    """Normalize a steamid (pandas may give int/float/str) to a stable string."""
+    try:
+        return str(int(v))
+    except (TypeError, ValueError):
+        return str(v)
+
+
 class GameDataSource(ABC):
     """Analysis/commentary/TTS/broadcast must NOT care where data came from."""
 
@@ -59,7 +67,7 @@ class DemoDataSource(GameDataSource):
         rs = parsed.get("round_start")
         if rs is not None and len(rs):
             try:
-                start_tick = int(rs.sort("tick")["tick"][0])
+                start_tick = int(rs.sort_values("tick")["tick"].iloc[0])
             except Exception:
                 start_tick = 0
 
@@ -67,7 +75,7 @@ class DemoDataSource(GameDataSource):
         deaths = parsed.get("player_death")
         kill_ticks = []
         if deaths is not None and len(deaths):
-            kill_ticks = sorted({int(t) for t in deaths["tick"].to_list()})
+            kill_ticks = sorted({int(t) for t in deaths["tick"].tolist()})
 
         tick_state = {}  # (tick, steamid) -> {hp, armor, team}
         if kill_ticks:
@@ -76,8 +84,8 @@ class DemoDataSource(GameDataSource):
                     ["health", "armor_value", "team_num", "team_name"],
                     ticks=kill_ticks,
                 )
-                for row in tdf.iter_rows(named=True):
-                    tick_state[(int(row["tick"]), str(row.get("steamid")))] = {
+                for row in tdf.to_dict("records"):
+                    tick_state[(int(row["tick"]), _sid(row.get("steamid")))] = {
                         "hp": row.get("health"),
                         "armor": row.get("armor_value"),
                         "team_num": row.get("team_num"),
@@ -91,11 +99,11 @@ class DemoDataSource(GameDataSource):
         # Build ordered round boundaries
         rounds = []  # list of (round_no, start_tick, end_tick, winner_side, reason)
         if rs is not None and len(rs):
-            st = sorted(int(t) for t in rs["tick"].to_list())
+            st = sorted(int(t) for t in rs["tick"].tolist())
             re = parsed.get("round_end")
             re_rows = []
             if re is not None and len(re):
-                for r in re.sort("tick").iter_rows(named=True):
+                for r in re.sort_values("tick").to_dict("records"):
                     re_rows.append(r)
             for i, s in enumerate(st):
                 nxt = st[i + 1] if i + 1 < len(st) else 10**12
@@ -128,13 +136,13 @@ class DemoDataSource(GameDataSource):
 
         # Kills
         if deaths is not None and len(deaths):
-            for r in deaths.sort("tick").iter_rows(named=True):
+            for r in deaths.sort_values("tick").to_dict("records"):
                 tick = int(r["tick"])
                 rn = round_of(tick)
                 atk = r.get("attacker_name")
                 vic = r.get("user_name")
-                atk_id = str(r.get("attacker_steamid"))
-                vic_id = str(r.get("user_steamid"))
+                atk_id = _sid(r.get("attacker_steamid"))
+                vic_id = _sid(r.get("user_steamid"))
                 if atk:
                     players.add(atk)
                 if vic:
@@ -162,7 +170,7 @@ class DemoDataSource(GameDataSource):
                                ("bomb_exploded", "BOMB_EXPLODE")):
             df = parsed.get(ev_name)
             if df is not None and len(df):
-                for r in df.iter_rows(named=True):
+                for r in df.to_dict("records"):
                     tick = int(r["tick"])
                     events.append(GameEvent(etype, self._t(tick, start_tick), tick,
                                             round_of(tick), player=r.get("user_name")))
