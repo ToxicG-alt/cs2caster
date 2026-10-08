@@ -7,3 +7,9 @@ backend/output/
 *.dem
 .screenshots/
 node_modules/
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
