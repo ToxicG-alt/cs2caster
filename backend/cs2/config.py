@@ -1,4 +1,5 @@
 """Central configuration. Scoring is configurable, never hardcoded permanently."""
+import os
 from copy import deepcopy
 
 DEFAULT_CONFIG = {
@@ -54,7 +55,7 @@ DEFAULT_CONFIG = {
         "analysis_depth": "medium",
         "profanity": False,
     },
-    "llm": {"provider": "openai", "model": "gpt-5.4"},
+    "llm": {"provider": "openai", "model": os.environ.get("LLM_MODEL", "gpt-5.6-luna")},
     "events": {
         "scoring": {
             "opening": 20, "headshot": 5, "awp": 5, "wallbang": 8, "smoke": 8,
