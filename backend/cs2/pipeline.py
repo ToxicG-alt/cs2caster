@@ -40,28 +40,37 @@ async def run_pipeline(source, out_dir, cfg=None, progress=None):
 
     commentary = []
     for ev in timeline:
+        mode = ("analysis" if ev.event_type == "ANALYSIS"
+                else "filler" if ev.event_type == "FILLER" else "play")
         commentary.append({
             "timestamp": round(ev.demo_time, 2), "round": ev.round,
             "hype_level": ev.hype_level, "importance": min(100, ev.priority),
             "situation": ev.reason, "player": ev.player, "text": ev.text,
             "facts_used": ev.facts, "confidence": "high", "method": ev.method,
-            "duration": ev.duration, "audio": None,
+            "mode": mode, "duration": ev.duration, "audio": None,
         })
 
     tts = get_tts_provider(cfg)
     emit("tts", 88)
     tts_ok = tts.available()
+    clips = []
     if tts_ok:
         any_audio = False
         for idx, c in enumerate(commentary):
-            fname = f"audio/clip_{idx:03d}.mp3"
-            if await tts.generate(c["text"], str(out / fname)):
+            fname = f"audio/clip_{idx:03d}.wav"
+            fpath = str(out / fname)
+            if await tts.generate(c["text"], fpath):
                 c["audio"] = fname
+                clips.append((c["timestamp"], fpath))
                 any_audio = True
         tts_ok = any_audio
+    full_audio = False
+    if clips:
+        from .audio_manager import build_timeline_wav
+        full_audio = build_timeline_wav(clips, str(out / "caster_audio.wav"))
 
     emit("writing_outputs", 97)
-    result = _assemble_result(info, stats, commentary, llm_calls, cfg, tts_ok)
+    result = _assemble_result(info, stats, commentary, llm_calls, cfg, tts_ok, full_audio)
     with open(out / "commentary.json", "w") as f:
         json.dump(commentary, f, indent=2)
     with open(out / "match_report.txt", "w") as f:
@@ -72,8 +81,9 @@ async def run_pipeline(source, out_dir, cfg=None, progress=None):
     return result
 
 
-def _assemble_result(info, stats, commentary, llm_calls, cfg, tts_ok):
+def _assemble_result(info, stats, commentary, llm_calls, cfg, tts_ok, full_audio=False):
     hype_dist = Counter(c["hype_level"] for c in commentary)
+    modes = Counter(c["mode"] for c in commentary)
     return {
         "map": info.map,
         "team_ct": info.team_ct, "team_t": info.team_t,
@@ -91,6 +101,8 @@ def _assemble_result(info, stats, commentary, llm_calls, cfg, tts_ok):
         "multikills": stats["multikills"],
         "commentary": commentary,
         "tts_available": tts_ok,
+        "full_audio": full_audio,
+        "mode_distribution": dict(modes),
         "caster": cfg["caster"]["name"],
     }
 

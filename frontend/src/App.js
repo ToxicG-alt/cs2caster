@@ -4,7 +4,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Radio, Upload, Play, Pause, Loader2, Trophy, Crosshair, Flame,
-  Volume2, Activity, Target, Zap, ShieldAlert, FileText, ChevronRight,
+  Volume2, Activity, Target, Zap, ShieldAlert, FileText, ChevronRight, Download,
 } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -280,6 +280,13 @@ export default function App() {
                     <p className="mt-1">{res.tts_available
                       ? <span className="text-emerald-400">● voice on</span>
                       : <span className="text-amber-400">● voice off (add ElevenLabs key)</span>}</p>
+                    {res.full_audio && (
+                      <a data-testid="download-audio" href={`${API}/cs2/matches/${detail.id}/full-audio`}
+                        className="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 rounded-md text-xs font-700 transition-transform hover:scale-[1.03]"
+                        style={{ background: "hsl(var(--primary))", color: "#0b0e14" }}>
+                        <Download size={13} /> Download synced caster audio
+                      </a>
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -344,6 +351,11 @@ export default function App() {
                                 <span className="text-[11px] px-1.5 py-0.5 rounded bg-secondary text-muted-foreground font-mono">
                                   {c.confidence}
                                 </span>
+                                {c.mode && c.mode !== "play" && (
+                                  <span className={`text-[11px] px-1.5 py-0.5 rounded font-mono font-600 ${c.mode === "analysis" ? "bg-accent/25 text-accent" : "bg-secondary text-muted-foreground"}`}>
+                                    {c.mode}
+                                  </span>
+                                )}
                                 {c.method && (
                                   <span className={`text-[11px] px-1.5 py-0.5 rounded font-mono font-600 ${c.method === "LLM" ? "bg-primary/25 text-primary" : "bg-secondary text-muted-foreground"}`}>
                                     {c.method}

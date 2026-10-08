@@ -8,6 +8,7 @@ The engine NEVER looks at future events when producing a line. This is what make
 """
 import logging
 import random
+from collections import deque
 from dataclasses import dataclass, field
 from typing import List, Optional
 
@@ -47,6 +48,9 @@ class _Round:
         self.alive = {"CT": set(), "T": set()}
         self.first_kill_done = False
         self.bomb_planted = False
+        self.start_ts = 0.0
+        self.plant_ts = None
+        self.said_topics = set()
         self.kill_seq = {}        # player -> [timestamps]
         self.clutch = None        # {player, side, enemies, kills, hp_start}
 
@@ -77,6 +81,14 @@ class CommentaryEngine:
         self.multikills = []
         self.clutches = []
         self.candidates = 0
+        # continuous-state / analyst memory
+        self.analyst_last_llm_t = -999.0
+        self.filler_last_t = -999.0
+        self.recent_topics = deque(maxlen=6)
+        self.round_winners = []
+        self.streak = {"CT": 0, "T": 0}
+        self.opening_kills = {}
+        self.analyst_llm_calls = 0
         self._rosters = self._prescan_rosters()
 
     # --- roster pre-pass (membership/counts only; not used for commentary content) ---
@@ -146,15 +158,22 @@ class CommentaryEngine:
 
     async def run(self, progress=None):
         n = len(self.events)
+        prev_t = None
         for i, e in enumerate(self.events):
             if e.type == "ROUND_START":
                 self._on_round_start(e)
-            elif e.type == "KILL":
-                await self._on_kill(e)
-            elif e.type == "BOMB_PLANT":
-                self._on_bomb(e)
-            elif e.type == "ROUND_END":
-                await self._on_round_end(e)
+                prev_t = e.timestamp
+            else:
+                # fill the quiet window BEFORE this event with analyst/filler (no future peeking)
+                if prev_t is not None and getattr(self, "cur", None) is not None:
+                    await self._fill_gap(prev_t, e.timestamp)
+                if e.type == "KILL":
+                    await self._on_kill(e)
+                elif e.type == "BOMB_PLANT":
+                    self._on_bomb(e)
+                elif e.type == "ROUND_END":
+                    await self._on_round_end(e)
+                prev_t = e.timestamp
             if progress and i % 40 == 0:
                 progress(int(100 * i / max(1, n)))
         self.timeline.sort(key=lambda c: c.demo_time)
@@ -164,6 +183,7 @@ class CommentaryEngine:
     def _on_round_start(self, e):
         self.rounds += 1
         self.cur = _Round(e.round)
+        self.cur.start_ts = e.timestamp
         roster = self._rosters.get(e.round, {"CT": set(), "T": set()})
         self.cur.alive = {"CT": set(roster["CT"]), "T": set(roster["T"])}
         self.last_comment_t = -999.0  # allow a fresh line at round start
@@ -196,6 +216,8 @@ class CommentaryEngine:
 
         opening = not r.first_kill_done
         r.first_kill_done = True
+        if opening and killer:
+            self.opening_kills[killer] = self.opening_kills.get(killer, 0) + 1
 
         seq = r.kill_seq.setdefault(killer, [])
         prev = seq[-1] if seq else None
@@ -315,6 +337,7 @@ class CommentaryEngine:
         r = getattr(self, "cur", None)
         if r:
             r.bomb_planted = True
+            r.plant_ts = e.timestamp
         pri = self.sc["bomb_plant"]
         if r and r.clutch:
             pri += 10
@@ -331,6 +354,10 @@ class CommentaryEngine:
             self.ct_score += 1
         elif winner == "T":
             self.t_score += 1
+        if winner in ("CT", "T"):
+            self.streak[winner] = self.streak.get(winner, 0) + 1
+            self.streak["T" if winner == "CT" else "CT"] = 0
+            self.round_winners.append(winner)
 
         r = getattr(self, "cur", None)
         # clutch win?
@@ -367,6 +394,129 @@ class CommentaryEngine:
         self._emit(CommentaryEvent(e.timestamp, e.round, "ROUND_END", f"round end ({winner})",
                                    pri, self._level(pri), self._pick(cat), "TEMPLATE",
                                    facts=[f"winner {winner}"]), interrupt=True)
+
+    # ------------------------------------------------------------- analyst loop
+    def _phase(self, r, t):
+        if r is None:
+            return "ROUND_END"
+        if r.clutch:
+            return "CLUTCH"
+        if r.bomb_planted:
+            return "POST_PLANT"
+        el = t - r.start_ts
+        if el < self.cfg["events"]["phase_early_s"]:
+            return "EARLY_ROUND"
+        if el < self.cfg["events"]["phase_mid_s"]:
+            return "MID_ROUND"
+        return "LATE_ROUND"
+
+    def _time_remaining(self, r, t):
+        ev = self.cfg["events"]
+        if r.bomb_planted and r.plant_ts is not None:
+            return max(0.0, round(ev["bomb_timer_s"] - (t - r.plant_ts), 1))
+        return max(0.0, round(ev["round_len_s"] - (t - r.start_ts), 1))
+
+    def _snapshot(self, r, t, phase):
+        a = r.alive
+        return {"round": r.number, "score": f"{self.ct_score}-{self.t_score}",
+                "time_remaining": self._time_remaining(r, t), "phase": phase,
+                "alive": {"CT": len(a["CT"]), "T": len(a["T"])},
+                "bomb_planted": r.bomb_planted, "recent_round_winners": self.round_winners[-3:]}
+
+    def _lead_streak(self):
+        if self.streak["CT"] >= self.streak["T"]:
+            return "CT", self.streak["CT"]
+        return "T", self.streak["T"]
+
+    def _in_form_player(self):
+        if not self.opening_kills:
+            return None
+        p = max(self.opening_kills, key=self.opening_kills.get)
+        return p if self.opening_kills[p] >= 2 and not p.startswith("_pad_") else None
+
+    async def _fill_gap(self, t0, t1):
+        r = self.cur
+        ev = self.cfg["events"]
+        if (t1 - t0) < ev["analyst_gap_min_s"]:
+            return
+        t = t0 + ev["analyst_interval_s"]
+        while t <= t1 - ev["analyst_buffer_s"]:
+            await self._analyst_at(r, t, t1)
+            t += ev["analyst_interval_s"]
+
+    async def _analyst_at(self, r, t, t1):
+        ev = self.cfg["events"]
+        if (t - self.last_comment_t) < ev["filler_cooldown_s"]:
+            return
+        phase = self._phase(r, t)
+        topic = self._choose_topic(r, t, phase)
+        if topic is None:
+            return
+        key, text, llm_eligible, confidence, snap = topic
+        if key in self.recent_topics:
+            return
+        method = "TEMPLATE"
+        if llm_eligible and self.llm.key and (t - self.analyst_last_llm_t) >= ev["analyst_llm_min_gap_s"]:
+            self.analyst_last_llm_t = t
+            self.llm_calls += 1
+            self.analyst_llm_calls += 1
+            res = await self.llm.analyst_tick(snap)
+            if not res or not res.get("speak") or not res.get("text"):
+                self._dbg(t, "ANALYST", key, phase, 0, "IGNORE", "REASON: llm chose silence")
+                return
+            text, method, confidence = res["text"], "LLM", res.get("confidence", "medium")
+        elif text is None:
+            return  # LLM-only topic but no budget/key -> stay silent (good)
+        if t + _dur(text) > t1 - 0.3:
+            return  # would run into the next event -> suppress (no interruptions)
+        etype = "FILLER" if key in ("early_default", "filler") else "ANALYSIS"
+        pri = 30 if etype == "ANALYSIS" else 20
+        self.candidates += 1
+        self._say(t, r.number, etype, key, pri, text, method, phase)
+
+    def _choose_topic(self, r, t, phase):
+        a = r.alive
+        ct, tt = len(a["CT"]), len(a["T"])
+        snap = self._snapshot(r, t, phase)
+        if phase == "CLUTCH":
+            return None
+        if phase == "POST_PLANT" and "post_plant" not in r.said_topics:
+            r.said_topics.add("post_plant")
+            return ("post_plant", self._pick("post_plant"), False, "high", snap)
+        diff = ct - tt
+        if abs(diff) >= 1:
+            lead = "CT" if diff > 0 else "T"
+            key = f"adv_{lead}_{abs(diff)}"
+            if key not in r.said_topics:
+                r.said_topics.add(key)
+                return (key, self._pick("adv", lead=lead), False, "high", snap)
+        if phase == "LATE_ROUND" and not r.bomb_planted and tt > 0 and "time_pressure" not in r.said_topics:
+            r.said_topics.add("time_pressure")
+            return ("time_pressure", self._pick("time_pressure"), False, "high", snap)
+        lead_side, strk = self._lead_streak()
+        if strk >= 3 and "momentum" not in r.said_topics:
+            r.said_topics.add("momentum")
+            snap["momentum"] = {"side": lead_side, "round_streak": strk}
+            return ("momentum", None, True, "medium", snap)
+        star = self._in_form_player()
+        if star and phase in ("EARLY_ROUND", "MID_ROUND") and f"form_{star}" not in r.said_topics:
+            r.said_topics.add(f"form_{star}")
+            snap["player_form"] = {"player": star, "opening_kills": self.opening_kills.get(star, 0)}
+            return (f"form_{star}", None, True, "medium", snap)
+        if phase in ("EARLY_ROUND", "MID_ROUND") and not r.first_kill_done and "early_default" not in r.said_topics:
+            r.said_topics.add("early_default")
+            return ("early_default", self._pick("early_default"), False, "low", snap)
+        return None
+
+    def _say(self, demo_time, round_no, etype, concept, priority, text, method, phase=""):
+        ev = CommentaryEvent(demo_time, round_no, etype, f"{phase}:{concept}".strip(":"),
+                             priority, self._level(priority), text, method,
+                             facts=[concept], duration=_dur(text))
+        self.timeline.append(ev)
+        self.last_comment_t = demo_time
+        self.filler_last_t = demo_time
+        self.recent_topics.append(concept)
+        self._dbg(demo_time, etype, concept, phase, priority, "COMMENT", f"METHOD: {method}")
 
     # ------------------------------------------------------------------ helpers
     def _track_multikill(self, rn, player, seq):

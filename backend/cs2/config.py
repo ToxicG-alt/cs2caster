@@ -69,6 +69,15 @@ DEFAULT_CONFIG = {
         "major_interrupt": 40,
         "llm_min_enemies": 3,   # only clutches of 1v3+ may use the LLM
         "llm_min_hype": 90,     # or any single moment this big
+        "round_len_s": 115.0,
+        "bomb_timer_s": 40.0,
+        "analyst_interval_s": 7.0,      # cadence of analyst checks inside a quiet gap
+        "analyst_gap_min_s": 6.0,       # only fill gaps longer than this
+        "analyst_buffer_s": 2.5,        # a filler line must finish before the next event
+        "analyst_llm_min_gap_s": 16.0,  # min demo-seconds between analyst LLM calls
+        "filler_cooldown_s": 10.0,      # min demo-seconds between any analyst/filler lines
+        "phase_early_s": 15.0,
+        "phase_mid_s": 40.0,
     },
     "templates": {
         "opening": ["{p} draws first blood!", "{p} finds the opener!",
@@ -87,6 +96,16 @@ DEFAULT_CONFIG = {
         "round_end_ct": ["Huge hold from the CTs!", "CTs take it.", "And the CTs convert."],
         "round_end_t": ["The Ts take the round.", "Round goes to the T side.", "Ts get it done."],
         "round_end": ["And that's the round.", "Round over."],
+        "filler": ["Still plenty of time on the clock.", "Both teams patient here.",
+                   "Quiet for a moment.", "Nothing committed just yet."],
+        "early_default": ["Both sides settling in.", "Early movement, nothing committed yet.",
+                          "A patient start to this one."],
+        "adv": ["The {lead} side has the man-advantage now.", "Numbers favour the {lead}s here.",
+                "That's bodies on the board for the {lead} side."],
+        "time_pressure": ["Clock's becoming a factor now.", "Time ticking away — they need to move.",
+                          "Not long left on this one."],
+        "post_plant": ["Bomb's down — it's all retake now.", "Now the retake is the story.",
+                       "Post-plant, and the pressure flips."],
     },
     "tts": {"provider": "elevenlabs", "voice_id": "xtw8E1CXDMtNKx4sgP7u",
             "model_id": "eleven_multilingual_v2",

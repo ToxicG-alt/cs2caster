@@ -26,16 +26,22 @@ class ElevenLabsProvider(TTSProvider):
         return bool(self.key)
 
     def _sync_generate(self, text, out_path):
+        import wave
         from elevenlabs import ElevenLabs, VoiceSettings
         client = ElevenLabs(api_key=self.key)
         audio = client.text_to_speech.convert(
             text=text, voice_id=self.voice_id, model_id=self.model_id,
-            output_format="mp3_44100_128",
+            output_format="pcm_44100",
             voice_settings=VoiceSettings(stability=0.4, similarity_boost=0.8,
                                          style=0.6, use_speaker_boost=True),
         )
-        with open(out_path, "wb") as f:
-            f.write(b"".join(audio))
+        pcm = b"".join(audio)
+        w = wave.open(out_path, "wb")
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(44100)
+        w.writeframes(pcm)
+        w.close()
         return True
 
     async def generate(self, text, out_path):
@@ -64,7 +70,7 @@ class OpenAITTSProvider(TTSProvider):
             from emergentintegrations.llm.openai import OpenAITextToSpeech
             tts = OpenAITextToSpeech(api_key=self.key)
             audio = await tts.generate_speech(text=text, model=self.model,
-                                              voice=self.voice, response_format="mp3")
+                                              voice=self.voice, response_format="wav")
             with open(out_path, "wb") as f:
                 f.write(audio)
             return True

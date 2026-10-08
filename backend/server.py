@@ -198,7 +198,16 @@ async def get_audio(match_id: str, clip: str):
     path = OUTPUT_DIR / match_id / "audio" / clip
     if not path.exists():
         raise HTTPException(404, "Audio not found")
-    return FileResponse(str(path), media_type="audio/mpeg")
+    return FileResponse(str(path), media_type="audio/wav")
+
+
+@api_router.get("/cs2/matches/{match_id}/full-audio")
+async def get_full_audio(match_id: str):
+    path = OUTPUT_DIR / match_id / "caster_audio.wav"
+    if not path.exists():
+        raise HTTPException(404, "Full audio not ready")
+    return FileResponse(str(path), media_type="audio/wav",
+                        filename=f"cs2_caster_{match_id}.wav")
 
 
 @api_router.get("/cs2/config")

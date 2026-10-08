@@ -19,20 +19,21 @@ async def main(path):
     eng = CommentaryEngine(info, events, cfg, get_llm_provider(cfg))
     timeline, debug, llm_calls, stats = await eng.run()
     print("score", stats["score"], "rounds", stats["total_rounds"], "kills", stats["total_kills"])
-    print("candidates", stats["candidates"], "commentary", len(timeline), "LLM_calls", llm_calls)
-    print("hype levels:", {l: sum(1 for c in timeline if c.hype_level == l) for l in range(6)})
-    print("\n--- chronological commentary (first ~2 rounds) ---")
-    rounds_seen = set()
+    print("candidates", stats["candidates"], "commentary", len(timeline), "LLM_calls", llm_calls,
+          "analyst_llm", eng.analyst_llm_calls)
+    modes = {}
     for c in timeline:
-        rounds_seen.add(c.round)
-        if len(rounds_seen) > 2:
+        m = ("analysis" if c.event_type == "ANALYSIS" else "filler" if c.event_type == "FILLER" else "play")
+        modes[m] = modes.get(m, 0) + 1
+    print("modes:", modes)
+    print("\n--- TRANSCRIPT (first ~3 rounds) ---")
+    seen = set()
+    for c in timeline:
+        seen.add(c.round)
+        if len(seen) > 3:
             break
-        print(f"  R{c.round} {int(c.demo_time//60):02d}:{c.demo_time%60:05.2f} "
-              f"[L{c.hype_level} {c.method} p={c.priority}] {c.text}")
-    print("\n--- all clutch / ace lines ---")
-    for c in timeline:
-        if c.event_type in ("CLUTCH", "CLUTCH_WIN") or "ACE" in c.text.upper():
-            print(f"  R{c.round} [{c.event_type} L{c.hype_level} {c.method}] {c.text}")
+        tag = ("PLAY" if c.event_type not in ("ANALYSIS", "FILLER") else c.event_type)
+        print(f"  {int(c.demo_time//60):02d}:{c.demo_time%60:05.2f} [{tag} L{c.hype_level} {c.method}] {c.text}")
 
 
 if __name__ == "__main__":

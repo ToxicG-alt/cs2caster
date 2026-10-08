@@ -45,10 +45,22 @@ TTS/broadcast. Deterministic Game-Understanding + Highlight layer MUST sit BEFOR
 - LLM clutch-win path fires correctly on the synthetic won 1v3 (1 call) with a factual live line.
 
 ## Superseded
-- OLD round-summary path (detect_round_highlights + per-situation analyst/caster) REMOVED from
-  pipeline; game_state.py/detection.py/match_memory.py retained only for helpers.
+- OLD round-summary path removed. Isolated one-line-per-event behavior upgraded to a continuous
+  caster (play-by-play + stateful analyst + filler + silence).
+
+## Continuous caster upgrade (2026-06)
+- Running MatchState/RoundState with round-PHASE detection (FREEZE/EARLY/MID/LATE/POST_PLANT/CLUTCH).
+- Analyst loop fills quiet gaps (interval ~7s) with grounded tactical/filler lines; scheduling
+  guarantees a filler finishes before the next event (no interruptions / no future peeking).
+- AnalystMemory: recent_topics dedup, per-round said_topics, team streaks, player opening-kill form,
+  recent round winners. Topics: man-advantage, time-pressure, post-plant (free templates);
+  momentum & player-form (gated LLM). LLM may answer speak:false (silence).
+- Credit control verified: real ~9-min demo = 3 analyst LLM calls; whole match ~3-6 total.
+- Downloadable match-length caster_audio.wav: each TTS clip placed at its demo timestamp via stdlib
+  `wave` (no ffmpeg), so it plays in sync with the recorded demo. Endpoint /cs2/matches/{id}/full-audio.
+- Frontend: mode badges (play/analysis/filler), LLM-call counter, "Download synced caster audio".
 
 ## Backlog / next
-- P1: widen LLM routing to eco upsets / comebacks (needs economy data) — kept off for credit control.
-- P1: synchronized single caster_audio.wav timeline for OBS playback at demo timestamps.
-- P2: OBS/FFmpeg + delayed GOTV LiveDataSource (delay_seconds); CV video layer.
+- P1: positional/utility/economy data (needs richer tick parse) to unlock map-control/rotation analysis.
+- P1: mix (not overwrite) overlapping clips in the stitched WAV.
+- P2: OBS/FFmpeg + delayed GOTV LiveDataSource.

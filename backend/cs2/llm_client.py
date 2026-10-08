@@ -152,6 +152,34 @@ class EmergentLLMProvider(LLMProvider):
             log.warning("comment_event LLM failed: %s", str(e)[:100])
         return None
 
+    async def analyst_tick(self, snapshot):
+        """Low-frequency tactical/filler analysis. Returns {'speak','text','confidence'} or None.
+        The snapshot contains ONLY current + recent facts (never future)."""
+        if not self.key:
+            return None
+        c = self.caster
+        system = (
+            f"You are {c['name']}, a professional LIVE CS2 esports caster talking to viewers who "
+            "can already see the game. You get a compact snapshot of the CURRENT situation and do "
+            "NOT know the future. If there is something genuinely worth saying, reply JSON "
+            '{"speak":true,"text":"...","confidence":"high|medium"} with ONE natural caster line '
+            "(8-25 words, present tense, ONLY the given facts; never invent utility, positions, "
+            "map control or player intentions; no markdown). If nothing is worth saying, reply "
+            '{"speak":false}. Silence is a good answer. Do not explain yourself.'
+        )
+        from emergentintegrations.llm.chat import UserMessage
+        try:
+            resp = await self._chat(system).send_message(
+                UserMessage(text=json.dumps(snapshot, default=str)))
+            data = self._extract_json(resp)
+            if data and data.get("speak") and data.get("text"):
+                return {"speak": True, "text": str(data["text"]).strip().strip('"'),
+                        "confidence": data.get("confidence", "medium")}
+            return {"speak": False}
+        except Exception as e:  # noqa
+            log.warning("analyst_tick LLM failed: %s", str(e)[:100])
+            return None
+
 
 def get_llm_provider(cfg):
     return EmergentLLMProvider(cfg)
